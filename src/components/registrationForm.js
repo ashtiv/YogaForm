@@ -6,10 +6,25 @@ function RegistrationForm() {
     const [lastName, setLastName] = useState(null);
     const [email, setEmail] = useState(null);
     const [age, setAge] = useState(null);
+    const [batch, setBatch] = useState('6-7AM');
     const isNumeric = (str) => {
         if (typeof str != "string") return false // we only process strings!  
         return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
             !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+    }
+    const isNullOrEmpty = (value) => {
+        if (value == null || value == undefined || value.length == 0) {
+            return false;
+        }
+        return true;
+    }
+    const validateEmail = (value) => {
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (value.match(validRegex)) {
+            return true;
+        } else {
+            return false;
+        }
     }
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -25,21 +40,33 @@ function RegistrationForm() {
         if (id === "age") {
             setAge(value)
         }
-
+        if (id === "batch") {
+            setBatch(value)
+        }
     }
 
     const handleSubmit = () => {
-        if (isNumeric(age)) {
-            var ageInt = parseInt(age);
-            if (ageInt < 18 || ageInt > 65) {
-                alert("Your age is not in range 18 to 65");
-            }
-            else {
-                console.log(firstName, lastName, email, age);
-            }
+        if (!(isNullOrEmpty(firstName) || isNullOrEmpty(lastName) || isNullOrEmpty(email) || isNullOrEmpty(age) || isNullOrEmpty(batch))) {
+            alert("Enter Valid Details")
         }
         else {
-            alert("Insert a valid age");
+            if (isNumeric(age)) {
+                var ageInt = parseInt(age);
+                if (ageInt < 18 || ageInt > 65) {
+                    alert("Your age is not in range 18 to 65");
+                }
+                else {
+                    if (validateEmail(email)) {
+                        console.log(firstName, lastName, email, age, batch);
+                    }
+                    else {
+                        alert("Enter valid email address")
+                    }
+                }
+            }
+            else {
+                alert("Insert a valid age");
+            }
         }
     }
 
@@ -61,6 +88,15 @@ function RegistrationForm() {
                 <div className="age">
                     <label className="form__label" for="age">Age </label>
                     <input className="form__input" type="age" id="age" value={age} onChange={(e) => handleInputChange(e)} placeholder="Age" />
+                </div>
+                <div className='Batch'>
+                    <label className="form__label" for="batch">Batch </label>
+                    <select id='batch' value={batch} onChange={(e) => handleInputChange(e)}>
+                        <option value="6-7AM">6-7AM</option>
+                        <option value="7-8AM">7-8AM</option>
+                        <option value="8-9AM">8-9AM</option>
+                        <option value="5-6PM">5-6PM</option>
+                    </select>
                 </div>
             </div>
             <div class="footer">
