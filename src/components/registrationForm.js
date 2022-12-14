@@ -1,7 +1,8 @@
 import React, { useState, setState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './style.css'
 function RegistrationForm() {
-
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState(null);
     const [lastName, setLastName] = useState(null);
     const [email, setEmail] = useState(null);
@@ -58,6 +59,8 @@ function RegistrationForm() {
                 else {
                     if (validateEmail(email)) {
                         console.log(firstName, lastName, email, age, batch);
+                        alert("Registration completed. Now complete the payment");
+                        navigate('/payment');
                     }
                     else {
                         alert("Enter valid email address")
@@ -71,7 +74,13 @@ function RegistrationForm() {
     }
 
     return (
+
         <div className="form">
+            <nav className="bg-dark navbar-dark navbar">
+                <div className="row col-12 d-flex justify-content-center text-white">
+                    <h3>Registration</h3>
+                </div>
+            </nav>
             <div className="form-body">
                 <div className="username">
                     <label className="form__label" for="firstName">First Name </label>
@@ -99,8 +108,8 @@ function RegistrationForm() {
                     </select>
                 </div>
             </div>
-            <div class="footer">
-                <button onClick={() => handleSubmit()} type="submit" class="btn">Register</button>
+            <div className="footer">
+                <button onClick={() => handleSubmit()} type="submit" className="btn">Register</button>
             </div>
         </div>
 
